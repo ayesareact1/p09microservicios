@@ -16,7 +16,7 @@ function App() {
 
   // Simulación o mock de un sistema de autenticación
 
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState({nombre: 'Juan Pérez', rol: 'ventas'});
   const navigate = useNavigate();
 
   const handleLogin = () => {
