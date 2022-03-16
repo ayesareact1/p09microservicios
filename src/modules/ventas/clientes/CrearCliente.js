@@ -7,7 +7,8 @@ export default function CrearCliente() {
 
     const [values, setValues] = useState({
         nombre: '',
-        cif: '',
+        actividades: '',
+        direccion: '',
         localidad: ''
     })
 
@@ -22,8 +23,15 @@ export default function CrearCliente() {
 
     const handleOnSubmit = e => {
         e.preventDefault();
-        setCliente(values);
-        navigate('/ventas/tabla-clientes'); // Navegación programática
+        setCliente(values)
+            .then(res => {
+                console.log(res.data);
+                navigate('/ventas/tabla-clientes');
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        
     }
 
   return (
@@ -43,10 +51,19 @@ export default function CrearCliente() {
                     </div>
                     <div className="row">
                         <div className="col-100">
-                            <label>CIF</label>
+                            <label>Actividades</label>
                             <input type="text" 
-                                   name="cif"
-                                   value={values.cif}
+                                   name="actividades"
+                                   value={values.actividades}
+                                   onChange={handleOnChange}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-100">
+                            <label>Dirección</label>
+                            <input type="text" 
+                                   name="direccion"
+                                   value={values.direccion}
                                    onChange={handleOnChange}/>
                         </div>
                     </div>

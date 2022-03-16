@@ -17,6 +17,6 @@ export function getClienteByCif(cif) {
 }
 
 export function setCliente(cliente) {
-    clientes.push(cliente);
+    return axios.post(clientesEndPoint, cliente);
 }
 
