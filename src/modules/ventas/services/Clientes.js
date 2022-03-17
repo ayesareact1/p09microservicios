@@ -18,3 +18,11 @@ export function setCliente(cliente) {
     return axios.post(clientesEndPoint, cliente);
 }
 
+export function editCliente(_id, cliente) {
+    return axios.put(clientesEndPoint + _id, cliente);
+}
+
+export function deleteCliente(_id) {
+    return axios.delete(clientesEndPoint + _id);
+}
+

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useFadeLoad } from '../../../hooks/useFadeLoad';
-import { getClienteByCif, getClienteById } from '../services/Clientes';
+import { getClienteById, editCliente } from '../services/Clientes';
 
 export default function EditarCliente() {
 
     const params = useParams();
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         nombre: '',
         actividades: '',
         direccion: '',
         localidad: ''
     })
-    const [isEditMode, setEditMode] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         getClienteById(params._id)
@@ -30,8 +31,29 @@ export default function EditarCliente() {
             })
     }, [params])
 
-    const handleOnChange = () => {}
-    const handleOnSubmit = () => {}
+    const handleOnChange = (e) => {
+        setValues({
+            ...values,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleIsEditMode = (e) => {
+        e.preventDefault();
+        setIsEditMode(!isEditMode);
+    }
+
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+        editCliente(params._id, values)
+            .then(res => {
+                console.log(res);
+                navigate("/ventas/tabla-clientes");
+            })
+            .catch(err => {
+                console.log(err);
+            })  
+    }
 
     return (
         <div className="container" ref={useFadeLoad()}>
@@ -79,10 +101,24 @@ export default function EditarCliente() {
                             </div>
                         </div>
                         <div className="row end">
-                            <Link to="/ventas/tabla-clientes" >
-                                <button className='outline'>Cancelar</button>
-                            </Link>
-                            <button type="submit">Añadir</button>
+                            {
+                                isEditMode ?
+                                <>
+                                    <button type="button" className="outline" onClick={handleIsEditMode}>Cancelar</button>
+                                    <button type="submit" className="m-l">
+                                        Guardar cambios
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <Link to="/ventas/tabla-clientes">
+                                        <button type="button" className="outline">Cancelar</button>
+                                    </Link>
+                                    <button type="button" className="m-l" onClick={handleIsEditMode}>
+                                        Editar
+                                    </button>
+                                </>
+                            }
                         </div>
                     </form>
                 </div>
